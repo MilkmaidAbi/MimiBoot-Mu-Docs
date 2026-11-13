@@ -1,0 +1,42 @@
+title: MimiBoot-Mu
+description: Documentation for MimiBoot-Mu, a configurable bootloader for RP2040/RP2350, STM32, nRF, SAM D and AVR.
+baseurl: /MimiBoot-Mu-Docs
+repo: https://github.com/MilkmanAbi/MimiBoot-Mu
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+exclude:
+  - README.md
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+nav:
+  - title: Overview
+    url: /
+  - title: Getting started
+    url: /getting-started.html
+  - title: Configuring a build
+    url: /configuring.html
+  - title: Features
+    url: /features.html
+  - title: Option reference
+    url: /options.html
+  - title: Boards
+    url: /boards.html
+  - title: Images and flashing
+    url: /images.html
+  - title: App library and handoff
+    url: /client.html
+  - title: Console and boot config
+    url: /console.html
+  - title: Zephyr and FreeRTOS
+    url: /zephyr-freertos.html
+  - title: AVR (Lite core)
+    url: /avr.html
+  - title: Adding boards and chips
+    url: /porting.html
+  - title: Test status
+    url: /status.html

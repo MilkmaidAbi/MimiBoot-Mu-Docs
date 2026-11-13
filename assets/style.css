@@ -1,0 +1,61 @@
+:root {
+  --bg: #ffffff;
+  --fg: #1f2328;
+  --muted: #59636e;
+  --line: #d1d9e0;
+  --code-bg: #f6f8fa;
+  --link: #0969da;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d1117;
+    --fg: #e6edf3;
+    --muted: #9198a1;
+    --line: #30363d;
+    --code-bg: #161b22;
+    --link: #4493f8;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--line);
+}
+header .site { font-weight: 600; font-size: 18px; color: var(--fg); }
+header .repo { font-size: 14px; }
+.wrap { display: flex; max-width: 1100px; margin: 0 auto; }
+nav { flex: 0 0 220px; padding: 24px 16px; border-right: 1px solid var(--line); }
+nav ul { list-style: none; margin: 0; padding: 0; position: sticky; top: 16px; }
+nav li { margin: 2px 0; }
+nav li a { display: block; padding: 3px 8px; border-radius: 4px; color: var(--muted); font-size: 15px; }
+nav li.here a { color: var(--fg); background: var(--code-bg); font-weight: 600; }
+main { flex: 1; min-width: 0; padding: 8px 32px 64px; }
+h1 { font-size: 30px; margin: 24px 0 12px; }
+h2 { font-size: 22px; margin-top: 36px; padding-bottom: 4px; border-bottom: 1px solid var(--line); }
+h3 { font-size: 18px; margin-top: 28px; }
+code, pre { font: 14px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
+pre { background: var(--code-bg); padding: 12px 14px; border-radius: 6px; overflow-x: auto; }
+pre code { padding: 0; background: none; }
+table { border-collapse: collapse; display: block; overflow-x: auto; margin: 12px 0; }
+th, td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; vertical-align: top; font-size: 15px; }
+th { background: var(--code-bg); }
+blockquote { margin: 12px 0; padding: 2px 14px; border-left: 3px solid var(--line); color: var(--muted); }
+@media (max-width: 760px) {
+  .wrap { display: block; }
+  nav { border-right: none; border-bottom: 1px solid var(--line); padding: 12px 16px; }
+  nav ul { position: static; display: flex; flex-wrap: wrap; gap: 4px 12px; }
+  nav li a { padding: 2px 0; }
+  main { padding: 8px 16px 48px; }
+}
