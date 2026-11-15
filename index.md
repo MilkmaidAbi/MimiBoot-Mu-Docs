@@ -8,7 +8,7 @@ MimiBoot-Mu is a bootloader for small microcontrollers: RP2040 and RP2350, STM32
 Nordic nRF51 and nRF52, Microchip SAM D21 and D51, and classic AVRs such as the
 ATmega328P on an Arduino Uno.
 
-It is configured like a Linux kernel. A menu (`python mimiconf.py`) lets you pick a
+It is configured like a Linux kernel. A menu, MuConfigurator (`python muconfigurator.py`), lets you pick a
 board and switch features on or off, and the build contains only what you picked.
 The configuration is a small text file, so you can change it and rebuild whenever
 your needs change.
@@ -32,7 +32,7 @@ between is a matter of flipping options.
 
 ## Two cores
 
-The **full core** runs on the 32-bit chips. It handles slots, image checks, signatures,
+The **full core** (codename Komorebi) runs on the 32-bit chips. It handles slots, image checks, signatures,
 the console, the boot config and the OS interface. On RP2040/RP2350 it builds with the
 Pico SDK; on STM32, nRF and SAM D it is bare metal with no vendor SDK.
 

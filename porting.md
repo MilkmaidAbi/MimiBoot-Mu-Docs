@@ -73,7 +73,7 @@ status = "built"
 ```
 
 `category` decides where the board shows up in the picker. Run
-`python tests/test_mimiconf.py` afterwards: it checks that every board resolves, and with
+`python tests/test_muconfigurator.py` afterwards: it checks that every board resolves, and with
 `--build-all` that it builds.
 
 ## A new chip in a known family

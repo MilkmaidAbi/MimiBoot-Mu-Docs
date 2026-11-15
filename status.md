@@ -31,17 +31,17 @@ flash operation, signatures, config, rollback floors, the console lock) is
 host-tested for every target: the checks in `tests/run.py` (two test programs:
 one built with the console lock), plus every feature profile in
 `tests/test_profiles.py`.
-`tests/test_mimiconf.py --build-all` compiles every board, and every chip has a board.
+`tests/test_muconfigurator.py --build-all` compiles every board, and every chip has a board.
 
 ## MimiBoot-Mu targets (13 November 2026)
 
 | target | label | evidence |
 |---|---|---|
-| RP2040 (Pico) | hardware (an earlier build) | Through `mimiconf.py build` the default config builds to 63.7 KB (the 2.0 baseline was 63.6 KB); configured variants have not been flashed |
+| RP2040 (Pico) | hardware (an earlier build) | Through `muconfigurator.py build` the default config builds to 63.7 KB (the 2.0 baseline was 63.6 KB); configured variants have not been flashed |
 | RP2350 (Pico 2 / Waveshare RP2350-LCD) | hardware (an earlier build) | as above; universal (Arm + RISC-V) image builds at 147 KB default, 90 KB with console and signatures off; configured variants not flashed |
 | STM32F405 (`netduinoplus2`) | emulator | `tests/qemu/test_qemu.py`: signed MIMG image boots from golden, VTOR at the image, PRIMASK 0 at entry, corrupted / untrusted-key images refused, UART break-in opens the menu, raw (FreeRTOS-style) image boots, imgtool-signed Ed25519 MCUboot image boots with signatures required, tampered / unsigned MCUboot images refused, an app linked with the client library finds its slot and validates the handoff |
 | STM32F100 (`stm32vldiscovery`) | emulator | same tests for the lean profile (no signatures) |
-| every other STM32 board in `config/targets.toml` | built | `tests/test_mimiconf.py --build-all` |
+| every other STM32 board in `config/targets.toml` | built | `tests/test_muconfigurator.py --build-all` |
 | nRF51822 (`microbit`, QEMU microbit) | emulator | `tests/qemu/test_qemu.py`: with nothing installed the console comes up (UART + TIMER0 time base); an image in golden boots with exceptions and an NVIC interrupt relayed to its handlers (no VTOR); PRIMASK 0 at entry; an image uploaded with mbtool's protocol over the UART is erased/written/read back through the NVMC driver, verifies and boots from slot a. QEMU's NVMC model ignores writes without WEN (checked), so a sequencing slip would have failed |
 | nRF52832 / 833 / 840 / 810 / 811 / 820 boards | built | every board compiles and fits (`--build-all`; the 52810/811 builds use the UARTE console and fit 28 KB of a 32 KB region with signatures off). Same NVMC + UART + TIMER code as the nRF51 run, except the UARTE path, the HF crystal start, APPROTECT, the watchdog, GPIO port 1 and VTOR: none of that has run |
 | SAM D21 / D51 boards (every chip in targets.toml has a board and compiles) | built + model | `tests/test_sim_flash.py`: `port/samd/samd_flash.c` against a model of each NVM controller (D21 word ADDR, page buffer, manual writes, one write per page; D51 8 KB blocks, ECC quad-words written once, cache off during commands, lock errors). The model encodes the same reading of the datasheet as the driver, so it catches coding slips, not misreadings. Clocks, SERCOM, PORT and watchdog code never ran |
@@ -61,7 +61,7 @@ Mini build have not run anywhere.
 | `SCRUB_RAM` | QEMU microbit: with it the bootloader's RAM region is all zero when the image starts and the handoff is intact; without it the same check finds data there |
 | `BOARD_LED` / `BOARD_BUTTON` off, `MENU_SECS` | compile-tested (the pins simply aren't generated) |
 | menuconfig (TUI) | Linux only: `tests/tui_smoke.py` drives it in a pseudo-terminal at 120 and 80 columns (picker, menus, toggles, save), and its screens were rendered and read through a terminal emulator. Not run on Windows (windows-curses: `pip install windows-curses`); it falls back to ASCII when the terminal isn't UTF-8 |
-| presets, output folder, source export | `tests/test_mimiconf.py`; every preset builds on STM32F411, SAM D21, nRF52840, nRF51, the Uno, Pico and Pico 2 (minimal and hobby). The exported Makefiles for nucleo-f411re and arduino-zero build with GNU make in WSL (Ubuntu's arm-none-eabi-gcc makes a 36.9 / 37.1 KB image where the Windows Arm toolchain makes 34.1 / 35.0 KB: a different compiler version). The AVR export's Makefile commands (`make -n`) run with the Arduino avr-gcc give the identical hex. The RP2040 export's BUILD.txt command builds the same-size image (58,904 B) through the Pico SDK. Every preset also built for pico and pico2 (RP2350 universal) |
+| presets, output folder, source export | `tests/test_muconfigurator.py`; every preset builds on STM32F411, SAM D21, nRF52840, nRF51, the Uno, Pico and Pico 2 (minimal and hobby). The exported Makefiles for nucleo-f411re and arduino-zero build with GNU make in WSL (Ubuntu's arm-none-eabi-gcc makes a 36.9 / 37.1 KB image where the Windows Arm toolchain makes 34.1 / 35.0 KB: a different compiler version). The AVR export's Makefile commands (`make -n`) run with the Arduino avr-gcc give the identical hex. The RP2040 export's BUILD.txt command builds the same-size image (58,904 B) through the Pico SDK. Every preset also built for pico and pico2 (RP2350 universal) |
 
 ### Security features (added 14 November 2026)
 

@@ -4,8 +4,8 @@ title: Option reference
 
 # Option reference
 
-Generated from `config/features.toml` in the MimiBoot-Mu repository (`python mimiconf.py site`).
-Set options in the TUI (`python mimiconf.py`) or with `python mimiconf.py set ID=value`.
+Generated from `config/features.toml` in the MimiBoot-Mu repository (`python muconfigurator.py site`).
+Set options in the TUI (`python muconfigurator.py`) or with `python muconfigurator.py set ID=value`.
 
 **Cost** is the flash a feature adds when it is on, measured by building a reference board with its defaults and again with that one option flipped: nucleo-f411re (mcu, default build 38.6 KB), uno (avr, default build 1.6 KB). Other chips differ a little (Cortex-M0 code is larger).
 
@@ -18,7 +18,7 @@ Set options in the TUI (`python mimiconf.py`) or with `python mimiconf.py set ID
 | `product` | **Product: safe field updates**. A/B + golden recovery, updates must confirm or roll back, watchdog on trial boots, crash-loop guard, anti-rollback, OS hooks. Signatures are checked when present. Diagnostics off. |
 | `secure` | **Secure boot: signed images only**. Only images signed with your keys start (set KEYS: mbtool keygen). Hash on every boot, anti-rollback, no raw/RAM images, no diagnostics, the bootloader's RAM is wiped before the handover. Where the chip can (nRF), the bootloader's flash is locked before an image starts and the rollback floors are kept in the locked region. Console commands that change anything need a signed unlock (mbtool --unlock-key). The debug port is left alone: close it (DEBUG_LOCK, or mbtool provision) once the product is final. |
 
-`python mimiconf.py preset <name>` (or Presets in the TUI): every option back to its default, then the preset's values. On small chips a preset doesn't turn back on what the chip's defaults trim to fit.
+`python muconfigurator.py preset <name>` (or Presets in the TUI): every option back to its default, then the preset's values. On small chips a preset doesn't turn back on what the chip's defaults trim to fit.
 
 ## Slots and updates
 
@@ -116,7 +116,7 @@ Boot images in MCUboot format: what Zephyr builds with CONFIG_BOOTLOADER_MCUBOOT
 
 The SHA-256 TLV is checked like any image hash; an ED25519 TLV is checked against the build's keys (sign with: imgtool keygen -t ed25519).
 
-mimiconf writes a devicetree overlay (zephyr-partitions.overlay) so the Zephyr app links at the right slot.
+MuConfigurator writes a devicetree overlay (zephyr-partitions.overlay) so the Zephyr app links at the right slot.
 
 A Zephyr app confirms itself MCUboot's way (boot_write_img_confirmed(), the image_ok flag in the slot's trailer): MimiBoot honours that. Not supported: encrypted images, 'pure' signatures, MCUboot swap modes, mcumgr uploads.
 
@@ -648,7 +648,7 @@ C macro: `MU_FEAT_LED`
 
 ## Build output
 
-Where `Build` puts the results, and whether to also export a self-contained source tree you can build without mimiconf.
+Where `Build` puts the results, and whether to also export a self-contained source tree you can build without MuConfigurator.
 
 ### `OUTPUT_DIR`: Output folder (each board gets a subfolder)
 
@@ -656,10 +656,10 @@ default **~/MimiBoot**.
 
 Where builds go: <folder>/<board>/. The default is MimiBoot in your home folder.
 
-Type any path, with or without quotes ("D:/firmware/boot" or ~/projects/boot). `mimiconf.py build -o DIR` overrides it for one build.
+Type any path, with or without quotes ("D:/firmware/boot" or ~/projects/boot). `muconfigurator.py build -o DIR` overrides it for one build.
 
 ### `EXPORT_SOURCE`: Also export the configured source tree (with a Makefile)
 
 default **off**.
 
-Copies exactly the sources this configuration compiles, the generated config header and linker script, and a Makefile into <output>/source/, so the bootloader can be rebuilt (or audited) without mimiconf. RP boards get the CMake project and the build command instead.
+Copies exactly the sources this configuration compiles, the generated config header and linker script, and a Makefile into <output>/source/, so the bootloader can be rebuilt (or audited) without MuConfigurator. RP boards get the CMake project and the build command instead.

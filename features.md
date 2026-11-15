@@ -24,7 +24,7 @@ from the menu or the boot config, like a test build or a second OS.
 
 On bare-metal chips the slot sizes come from the chip's flash and sector map. Every
 region starts and ends on an erase boundary, so erasing one slot can't touch another.
-`python mimiconf.py layout` prints the map. RP boards use fixed layouts for 2, 4 and
+`python muconfigurator.py layout` prints the map. RP boards use fixed layouts for 2, 4 and
 16 MB of flash.
 
 Next to the slots there is a small boot log (two flash sectors, written alternately).

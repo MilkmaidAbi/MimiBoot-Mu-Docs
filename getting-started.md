@@ -17,7 +17,7 @@ title: Getting started
 | RP2040 | the Pico SDK (set `PICO_SDK_PATH`), plus the Arm toolchain |
 | RP2350 | the Pico SDK, picotool and a RISC-V toolchain (the build makes an Arm + RISC-V image) |
 
-`python mimiconf.py toolchains` shows what it found. If something lives in an odd place,
+`python muconfigurator.py toolchains` shows what it found. If something lives in an odd place,
 point it there with `MU_ARM_GCC`, `MU_AVR_GCC`, `PICO_SDK_PATH`, `PICOTOOL` or
 `RISCV_TOOLCHAIN`.
 
@@ -28,7 +28,7 @@ from the command line without it.
 
 ```
 cd MimiBoot-Mu
-python mimiconf.py
+python muconfigurator.py
 ```
 
 The first screen lists chip makers. Pick one, then a category, then your board. You land
@@ -38,11 +38,11 @@ result goes to `~/MimiBoot/<board>/`.
 The same without the menu:
 
 ```
-python mimiconf.py defconfig nucleo-f411re
-python mimiconf.py build
+python muconfigurator.py defconfig nucleo-f411re
+python muconfigurator.py build
 ```
 
-`python mimiconf.py boards` lists every board name.
+`python muconfigurator.py boards` lists every board name.
 
 ## What the build gives you
 

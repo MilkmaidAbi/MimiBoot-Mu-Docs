@@ -4,14 +4,14 @@ title: Configuring a build
 
 # Configuring a build
 
-Everything about a build lives in one text file, `.config` by default. `mimiconf.py`
+Everything about a build lives in one text file, `.config` by default. MuConfigurator (`muconfigurator.py`)
 reads it, lets you change it, and builds from it. Use `-c path` to work on a different
 file, which is handy when you keep one config per project.
 
 ## The menu
 
 ```
-python mimiconf.py
+python muconfigurator.py
 ```
 
 Without a `.config` it starts at the board picker: maker, then category, then board. The
@@ -56,14 +56,14 @@ is nothing to roll back to.
 ## The command line
 
 ```
-python mimiconf.py boards                  # every board, by maker and category
-python mimiconf.py defconfig <board>       # start a .config with that board's defaults
-python mimiconf.py preset product          # apply a preset (no name: list them)
-python mimiconf.py set SHELL_DIAG=n BOOT_VERIFY=once
-python mimiconf.py show                    # every option with its current value, and warnings
-python mimiconf.py layout                  # the flash map, without building
-python mimiconf.py build                   # build; -o DIR to put it somewhere else
-python mimiconf.py toolchains              # which compilers were found
+python muconfigurator.py boards            # every board, by maker and category
+python muconfigurator.py defconfig <board> # start a .config with that board's defaults
+python muconfigurator.py preset product    # apply a preset (no name: list them)
+python muconfigurator.py set SHELL_DIAG=n BOOT_VERIFY=once
+python muconfigurator.py show              # every option with its current value, and warnings
+python muconfigurator.py layout            # the flash map, without building
+python muconfigurator.py build             # build; -o DIR to put it somewhere else
+python muconfigurator.py toolchains        # which compilers were found
 ```
 
 Option names are the IDs in the [option reference](options.html). Booleans take `y` or
@@ -90,7 +90,7 @@ and tells you which ones it skipped.
 It looks like a kernel `.config`:
 
 ```
-# MimiBoot-Mu configuration (python mimiconf.py)
+# MimiBoot-Mu configuration (python muconfigurator.py)
 MU_BOARD="nucleo-f411re"
 MU_LAYOUT="ab"
 # MU_AB_TRIAL is not set

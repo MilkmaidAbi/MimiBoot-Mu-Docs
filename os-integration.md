@@ -44,7 +44,7 @@ clear (`.uninitialized_data` on the Pico SDK; give it a `NOLOAD` section in
 your own linker script). `mbtool pack` finds the symbol in the ELF and writes
 its address and size into the image header, so there is nothing to configure.
 
-On the bootloader side the `OS_HOOKS` option (in mimiconf's "Handoff and OS
+On the bootloader side the `OS_HOOKS` option (in MuConfigurator's "Handoff and OS
 hooks" menu) turns all of this on. It is on by default nearly everywhere. Where
 the bootloader region is tight (F103RB/CB, F401CC, G431RB, nRF52810/811) the
 diagnostic shell commands are off by default to make room for it, and on parts
@@ -186,7 +186,7 @@ mb_ctl_line(line, print, NULL);          // "status", "reboot menu", "slots" ...
 
 ```
 $ mbctl status
-loader    MimiBoot 2.0.0 on nucleo-f411re (stm32f411re), handoff v2
+loader    MimiBoot 3.0.0 on nucleo-f411re (stm32f411re), handoff v2
           the boot took 41 ms
 running   slot a: "sensor-node" 1.4.0 (security 3), a trial boot
 trial     not confirmed: 2 boots left, then the previous image ('mbctl confirm' when it works)
