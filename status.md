@@ -6,7 +6,17 @@ title: Test status
 
 > From `docs/HARDWARE-STATUS.md` in the repository; the [feature matrix](matrix.html) has the same facts board by board.
 
-Read this before flashing a board. Labels mean exactly this:
+Read this before flashing a board.
+
+> **STM32: keep an ST-Link on SWD while you try a board.** No STM32 flash write
+> has ever run on a real chip: QEMU has no STM32 flash controller, so the
+> erase/program drivers are written from the reference manuals and have never
+> executed. Uploads, the boot log, confirming an image and the rollback floors
+> all write flash. Check that STM32CubeProgrammer can connect under reset and
+> mass-erase the board before you start, and leave readout protection alone
+> (RDP level 2 can't be undone).
+
+Labels mean exactly this:
 
 | label | meaning |
 |---|---|

@@ -32,9 +32,12 @@ Until your board has been tried:
   reset* (with NRST wired) or *Hot plug*, connect, and try a full chip erase once before
   you need it. If the bootloader turns off the debug pins or crashes early, connecting
   under reset still works because the chip is held before any code runs.
-- **Know where BOOT0 is.** Holding BOOT0 high at reset starts the chip's own ROM loader
-  (UART, and USB DFU on chips that have it), whatever the flash holds. On a Blue Pill
-  that's the BOOT0 jumper; on a Nucleo it's a pin on the morpho header.
+- **Know where BOOT0 is.** On most families, holding BOOT0 high at reset starts the
+  chip's own ROM loader (UART, and USB DFU on chips that have it), whatever the flash
+  holds. On a Blue Pill that's the BOOT0 jumper; on a Nucleo it's a pin on the morpho
+  header. **STM32G0 is different:** from the factory it takes BOOT0 from an option bit
+  (`nBOOT_SEL` set), not the pin, and the pin doubles as SWCLK. On a G0, SWD is your
+  way back.
 - **Leave readout protection alone.** `mbtool provision` prints the option-byte commands
   for write protection and RDP; it never runs them. RDP level 1 can be undone (going back
   to level 0 erases the whole chip). **RDP level 2 can't be undone, ever**, and it also
