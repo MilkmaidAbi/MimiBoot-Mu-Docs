@@ -1,5 +1,5 @@
 title: MimiBoot-Mu
-description: Documentation for MimiBoot-Mu, a configurable bootloader for RP2040/RP2350, STM32, nRF, SAM D and AVR: features, every board's support and test status, OS integration.
+description: "Documentation for MimiBoot-Mu, a configurable bootloader for RP2040/RP2350, STM32, nRF, SAM D and AVR: features, every board's support and test status, OS integration."
 baseurl: /MimiBoot-Mu-Docs
 repo: https://github.com/MilkmanAbi/MimiBoot-Mu
 markdown: kramdown
