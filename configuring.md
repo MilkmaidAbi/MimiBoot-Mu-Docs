@@ -19,17 +19,30 @@ panel on the right (or at the bottom, in a narrow terminal) describes whatever i
 highlighted: a board's chip, console pins and test status, or an option's help text,
 default, what it depends on and roughly how much flash it costs.
 
-The home screen has your board, the presets, one entry per group of options with a count
-of what's switched on, the flash map, the output folder and **Build now**.
+The home screen says what your build does in plain words, one line per group of options
+(slots, image formats, security, console, OS hooks), then what you've changed from the
+board's defaults, then any problems. Enter on a problem takes you to the option that
+fixes it.
+
+Under the title there is a **flash gauge**: how much of the bootloader's region this
+configuration needs. While you change things it's an estimate, from measured sizes of
+each option; after a build it's the real number. When an estimate gets close to the
+limit it says "build to check". The limit follows the layout, so a bigger `BOOT_SIZE`
+moves it, and in a two-stage build stage 1 is sized to fit.
+
+When you switch an option, the line at the bottom says what else came on or went off
+with it. The key bar only shows the keys that do something on the highlighted line.
 
 | Key | What it does |
 |---|---|
-| Up, Down, PgUp, PgDn, Home, End | move |
-| Enter or Right | open a menu, toggle an option, edit a value |
+| Up, Down, PgUp, PgDn, Home, End (or `j`, `k`) | move |
+| Enter or Right | open a menu, toggle an option, edit a value, go to a problem's fix |
 | Space | toggle an option, or step to the next choice |
 | Esc, Left or Backspace | go back |
-| `/` | search options by name or help text |
+| `/` | find: options as you type, or boards in the board picker |
 | `?` | show the full help for the highlighted item |
+| `u` | undo the last change |
+| `d` | put the highlighted option back to the board's default |
 | `P` | presets |
 | `L` | flash map |
 | `B` | save and build |

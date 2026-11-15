@@ -64,6 +64,10 @@ RP2040/RP2350: `.uf2`, `.bin` and `.elf` files, as the Pico SDK makes them.
 
 ## Flashing the bootloader
 
+Read [Before you flash](before-you-flash.html) first. On STM32 especially: no flash write
+has run on a real chip yet, so keep an ST-Link on SWD and check you can connect under
+reset before you start.
+
 STM32, nRF and SAM D: write `mimiboot.bin` to the start of flash with an SWD probe
 (ST-LINK, J-Link, a DK's on-board debugger, a CMSIS-DAP probe, OpenOCD, pyOCD). Some
 things to know:

@@ -17,10 +17,13 @@ STM32, nRF and SAM D: every build writes `client.txt` listing the source files a
 compiler flags. In short, compile these with your app:
 
 ```
-core/mb_hash.c core/mb_ed25519.c core/mb_image.c core/mb_bcl.c core/mb_config.c
-core/mb_control.c core/mb_grub.c core/mb_recv.c core/mb_formats.c client/mb_client.c
+core/mb_hash.c core/mb_ed25519.c core/mb_ecdsa.c core/mb_lms.c core/mb_image.c
+core/mb_bcl.c core/mb_config.c core/mb_control.c core/mb_grub.c core/mb_recv.c
+core/mb_enc.c core/mb_formats.c core/mb_floor.c client/mb_client.c client/mb_ctl.c
 port/cortexm/cm_port.c port/<stm32|nrf|samd>/<vendor>_flash.c
 ```
+
+`client.txt` from your build is the list to trust; this one is for orientation.
 
 with `-DMB_CM_CLIENT -DMB_CONFIG_HEADER="path/to/mimiboot_config.h"` and the repository
 root and `include/` on the include path. Use the `mimiboot_config.h` from the same build
@@ -73,6 +76,11 @@ image.
 | `boot_count` | the boot log's counter |
 | `loader_version` | the bootloader's version |
 
+With `OS_HOOKS` on and a 320-byte buffer (the size `MB_HANDOFF_BUFFER` gives), the
+handoff is version 2 and also carries how the previous run ended, the bootloader's
+build features and capabilities, and some random bytes. An older app with a 160-byte
+buffer still gets version 1; nothing is ever written past the buffer.
+
 It is checksummed and carries the ID of the image it was written for. The library clears
 it once read, so data left in RAM from an earlier boot is never taken for a new one.
 `mb_client_args()` always returns a string: from the handoff if there is one, otherwise
@@ -106,13 +114,36 @@ mb_client_request_entry("debug", "loglevel=7"); /* boot a config entry once, wit
 ```
 
 The request is written to the boot log; reset the chip afterwards and the bootloader acts
-on it once. `mb_client_reboot_menu()` and `mb_client_reboot_config()` queue a request
+on it once. With `OS_HOOKS` the newer calls below do the same through RAM, without a
+flash write.
+
+## The OS hooks
+
+When the bootloader is built with `OS_HOOKS`, the app (or the OS) gets a much bigger
+toolbox. A short tour; [OS integration](os-integration.html) has the whole story.
+
+```c
+mb_end_t why;
+if (mb_client_last_end(&why) == 0) { /* why.reason: reboot, update, poweroff, panic, fault, watchdog... */ }
+
+mb_client_next(MB_CONTROL_ENTRY, "recovery", "fsck=1", MB_VIA_AUTO);   /* next boot only */
+mb_client_reboot(MB_END_UPDATE, "new firmware staged");                 /* reboot, saying why */
+mb_client_panic("heap corrupted");      /* counts as a crash; several in a row roll back */
+mb_client_poweroff("battery low");      /* nRF System OFF; MB_E_UNSUPP elsewhere */
+mb_client_rollback();                   /* back to the other confirmed image, never below the floor */
+```
+
+`mb_client_slot_info()`, `mb_client_entries()` and `mb_client_loader_info()` describe the
+slots, the boot entries and the bootloader. `mbctl` (`client/mb_ctl.c`) wraps all of it in
+shell commands, `mbctl status`, `mbctl next entry recovery`, `mbctl last` and so on, for an app
+that has a command line of its own. `mb_client_reboot_menu()` and `mb_client_reboot_config()` queue a request
 and reboot in one call. `mb_client_capabilities()` says which requests this bootloader
 build understands.
 
 ## Installing an update from the app
 
 ```c
+mb_client_install_sig(sig, sig_len);         /* LMS-signed images only: the signature first */
 int other = mb_client_other_slot();
 mb_client_install_begin(other, &hdr);        /* the 256-byte image header */
 mb_client_install_write(offset, data, len);  /* as many times as needed */
